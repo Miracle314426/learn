@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+    <style type="text/css">
+    canvas {
+        border: 1px solid #333;
+
+    }
+    </style>
+</head>
+<body>
+<canvas id="cas" width="600" height="600"></canvas>
+</body>
+<script type="text/javascript">
+    var cas = document.getElementById("cas");
+    var ctx = cas.getContext("2d");
+    function toAngle ( radian ) {
+        return radian * 180 / Math.PI; 
+    }
+    function toRadian ( angle ) {
+        return angle * Math.PI / 180;
+    }
+    var x0 = cas.width/2,
+        y0 = cas.height/2,
+        r1 = 200,
+        r2 = 160;
+
+    var count = 0;
+    var count1 = 0;
+    var w = 10,
+        h = 10;
+
+    var a = -90;
+    var b;
+    var c = 90,
+        d;
+      
+    var intervalId = setInterval( function () {  
+
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.moveTo(cas.width/2+r1,cas.height/2);
+    ctx.arc(cas.width/2,cas.height/2,r1,0,2*Math.PI,true);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cas.width/2+r2,cas.height/2);
+    ctx.arc(cas.width/2,cas.height/2,r2,0,2*Math.PI,true);
+    ctx.fillStyle = "lightgreen";
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.lineWidth = 1;
+    //竖线
+
+    for(var i = 0;i<2*r2/w;i++){
+        count += 20;
+        ctx.moveTo(140 + count,300-Math.sqrt(r2*r2-(160-count)*(160-count)));
+        ctx.lineTo(140 + count,300+Math.sqrt(r2*r2-(160-count)*(160-count))); 
+    }
+    //横线
+    for(var i = 0;i<2*r2/h;i++){
+        count1 += 20;
+        ctx.moveTo(300-Math.sqrt(r2*r2-(160-count1)*(160-count1)),140 + count1);
+        ctx.lineTo(300+Math.sqrt(r2*r2-(160-count1)*(160-count1)),140 + count1); 
+    }
+    ctx.stroke();
+    
+    //龙珠
+    ctx.beginPath();
+    ctx.fillStyle = "#f89d2e";
+    ctx.arc(cas.width/2+55,cas.height/2-75,10,0,2*Math.PI);
+    ctx.fill();
+    //五角星
+    ctx.beginPath();
+    ctx.fillStyle = "#d5310b";
+    ctx.arc(cas.width/2+55,cas.height/2-75,6,0,2*Math.PI);
+    ctx.fill();
+    
+    //扫描
+    
+
+        //ctx.clearRect( 0, 0, cas.width, cas.height );
+        //cas.width = cas.width;
+
+        ctx.beginPath();
+        ctx.moveTo( cas.width / 2, cas.height / 2 );
+        ctx.arc( cas.width / 2, cas.height / 2, 50, 
+                    toRadian(b), 
+                    toRadian(a));
+        ctx.fillStyle = 'yellow';
+        ctx.fill();
+
+        a++;    
+        c++;
+        /*if ( a >= 270 ) {
+            clearInterval( intervalId );
+            alert( '绘制完成' );
+            a = 270;
+        }*/
+        b = a - 45;
+        d = c - 180;
+        ctx.beginPath();
+        ctx.moveTo( cas.width / 2, cas.height / 2 );
+        ctx.arc( cas.width / 2, cas.height / 2, 160, 
+                    toRadian(b), 
+                    toRadian(a));
+        ctx.fillStyle = 'rgba(0,0,255,0.2)';
+        ctx.fill();
+        /*ctx.beginPath();
+        ctx.moveTo( cas.width / 2, cas.height / 2 );
+        ctx.arc( cas.width / 2, cas.height / 2, 50, 
+                    toRadian(d), 
+                    toRadian(c));
+        ctx.fillStyle = 'rgba(255,0,0,1)';
+        ctx.fill();*/
+    
+    //原点
+    ctx.beginPath();
+    ctx.moveTo( cas.width / 2, cas.height / 2 );
+    ctx.arc(cas.width/2,cas.height/2,5,0,2*Math.PI);
+    ctx.fillStyle = "black";
+    ctx.fill();
+
+    }, 10);
+
+</script>
+</html>  
