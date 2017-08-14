@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #app{
+            width: 800px;
+
+            margin: 20px auto;
+        }
+        #tb{
+            width: 800px;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        #tb th{
+            background-color: lightpink;
+            color:white;
+            font-size: 16px;
+            padding: 5px;
+            text-align: center;
+            border: 1px solid black;
+        }
+        #tb td{
+
+            padding: 5px;
+            text-align: center;
+            border: 1px solid black;
+        }
+    </style>
+    <script src="./vue1026.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="id"/>
+        <input type="text" v-model="pname"/>
+        <input type="text" placeholder="请输入您喜欢的车名" v-model="sname"/>
+        <button @click="addData()">添加数据</button>
+
+        <table id="tb">
+            <tr>
+                <th>编号</th>
+                <th>名称</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            <tr v-if="list.length==0">
+                <td colspan="4">当前列表无数据</td>
+            </tr>
+            <tr v-for="item in list | filterBy sname in 'name'">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.ctime}}</td>
+                <td><a href="#" @click="delData(item.id)">删除</a></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        var vm=new Vue({
+            el:'#app',
+            data:{
+                list:[
+                   {id:1,name:"宝马",ctime:new Date()},
+                   {id:2,name:"奔驰",ctime:new Date()},
+                   {id:3,name:"奥迪",ctime:new Date()},
+                   {id:4,name:"Jeep自由光",ctime:new Date()},
+                   {id:5,name:"霸道",ctime:new Date()}
+                ],
+                id:'0',
+                pname:'',
+                sname:''
+            },
+            methods:{
+                addData:function(){
+                    //用一个变量把顾客输入的数据用之前list里数据的存储方式给他集合起来
+                    var p={id:this.id,name:this.pname,ctime:new Date()};
+                    //收集起来的数据添加到list里
+                    this.list.push(p);
+                    //添加完之后要把input里的数据清空
+                    this.id='';
+                    this.pname=''
+                },
+                delData:function(id){
+                    //原理:利用数组的一个方法findIndex()来完成
+                    //具体是我们在回调函数里传入item,item会自动的遍历list,这样的话只要传入的
+                    //id(也就是我们想删除的数据的id)和item的id匹配上,我们就能拿到当前数据的索引,
+                    //然后再用splice()这个方法利用索引删除数据
+                    var index=this.list.findIndex(function(item){
+                        return item.id == id;
+                    })
+                    //调用list.splice()这个方法,括号里第一个数据是删除的索引,第二个是从当前索引开始要删除的数据的个数
+                    this.list.splice(index,1);
+                }
+            }
+        })
+    </script>
+    <script>
+        //1.实现品牌数据列表
+        //2.实现品牌数据数据添加
+        //双向数据绑定和点击事件
+        //3.实现品牌数据删除
+        //4.实现品牌管理按条件筛选数据
+    </script>
+</body>
+</html>
